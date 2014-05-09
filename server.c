@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
 		    close(stdout);
 		    close(stderr);
 		    shutdown(s_new, 2);
-	        close(s_new);
+	        	close(s_new);
 		    exit(0);
 		}
     }
