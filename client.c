@@ -17,7 +17,6 @@ void halt(int sig) {
     printf("\nClient shutdown.\n");
     shutdown(s, 2);
     close(s);
-    //wait();
     exit(0);
 }
 
@@ -35,10 +34,6 @@ int main(int argc, char** argv) {
         exit(1);
     }
 
-    /*dest path parsing*/
-    //char* slesh = rindex(argv[1], '/');
-
-    //dest_path = malloc(sizeof(argv[2])+BUF_SIZE);
     command = malloc(sizeof(argv[2])+BUF_SIZE);
     strcpy(command, argv[2]);
 
