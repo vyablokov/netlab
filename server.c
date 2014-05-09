@@ -15,8 +15,8 @@ int s;
 
 void halt(int sig) {
     printf("Server shutdown.\n");
+    shutdown(s, 2);
     close(s);
-    //wait();
     exit(0);
 }
 
@@ -54,22 +54,20 @@ int main(int argc, char** argv) {
     for(;;) {
         from_len = sizeof(cname);
         setsockopt(s_new, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof optval);
-	s_new = accept(s, &cname, &from_len);
-	recv(s_new, buf, BUF_SIZE, 0);
-	printf("Executing command \"%s\".\n", buf);
-        
-	child_pid = fork();
-	if(child_pid == 0) {
-	    //fflush(stdout);
-	    dup2(s_new, fileno(stdout));
-	    dup2(s_new, fileno(stderr));
-	    system(buf);
-	    close(stdout);
-	    close(stderr);
-
-	    shutdown(s_new, 2);
-            close(s_new);
-	    exit(0);
-	}
+		s_new = accept(s, &cname, &from_len);
+		recv(s_new, buf, BUF_SIZE, 0);
+		printf("Executing command \"%s\".\n", buf);
+	        
+		child_pid = fork();
+		if(child_pid == 0) {
+		    dup2(s_new, fileno(stdout));
+		    dup2(s_new, fileno(stderr));
+		    system(buf);
+		    close(stdout);
+		    close(stderr);
+		    shutdown(s_new, 2);
+	        close(s_new);
+		    exit(0);
+		}
     }
 }
